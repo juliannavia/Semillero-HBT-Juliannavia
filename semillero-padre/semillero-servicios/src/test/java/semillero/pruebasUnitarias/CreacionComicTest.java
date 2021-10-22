@@ -15,29 +15,35 @@ import com.hbt.semillero.enums.TematicaEnum;
 
 import junit.framework.Assert;
 
+/**
+ * <b>Descripción:<b> Clase que determina la creacion de un test unitario para la entidad Comic
+ * <b>Caso de Uso: SEMILLERO 2021<b> 
+ * @author David Navia
+ * @version 1.0
+ */
+@Test
 public class CreacionComicTest {
-	
-	public static void main(String[] args) {
-
-
-		CreacionComicTest test1 = new CreacionComicTest();
-		test1.leerComicsActivos();
-
-	}
-
-	
-	public CreacionComicTest() {
-		
-	}
-	
 	private final static Logger log = Logger.getLogger(CreacionComicTest.class);
 	
+	/**
+	 * Metodo encargado de inicializar el Log para el manejo de logs.
+	 * <b>Caso de Uso</b> CU-2021
+	 * @author David Navia
+	 *
+	 */
 	@BeforeTest
 	public void inicializar() {
 		BasicConfigurator.configure(); //Inicializo el Logger con una configuración básica.
 		log.info(":::::::::::::::::::::::: INICIAN LAS PRUEBAS UNITARIAS ::::::::::::::::::::::::::::::::");
 	}
-
+	
+	/**
+	 * Metodo encargado de crear un listado de 10 Comics para ser testeados, diferenciandose si están activos o no.
+	 * <b>Caso de Uso</b> CU-2021
+	 * @author David Navia
+	 * 
+	 * @return Array de Comics
+	 */
 	public ComicDTO[] crearComics(){
 		ComicDTO comicDTO1 = new ComicDTO("1","EL GRAN COMIC 1","MarvelComics",TematicaEnum.AVENTURAS,"Primera",new Integer(99),new BigDecimal(1000000),"Adam Smith",true,EstadoEnum.DISPONIBLE, new Long(1));
 		ComicDTO comicDTO2 = new ComicDTO("1","EL GRAN COMIC 1","MarvelComics",TematicaEnum.AVENTURAS,"Primera",new Integer(99),new BigDecimal(1000000),"Adam Smith",true,EstadoEnum.DISPONIBLE, new Long(1));
@@ -65,75 +71,58 @@ public class CreacionComicTest {
 		return comics;
 	}
 	
+	/**
+	 * Metodo encargado de verificar si los comics están activos con un test unitario.
+	 * <b>Caso de Uso</b> CU-2021
+	 * @author David Navia
+	 * @return listado de Comics activos.
+	 */
+	@Test
 	private ComicDTO[] verificarComicsActivos() {
-		int indice = 0;
-		
+		log.info("inicio TEST verificarComicsActivos()");
+		int indice = 0; //Variable que se encarga de asignar un indice al array que contendrá los comics activos.
 		ComicDTO[] comics = crearComics();
-		
 		//For donde busco cuantos comics están disponibles
 		for (int i = 0; i < comics.length; i++) {
 			if(comics[i].getEstadoEnum() == EstadoEnum.DISPONIBLE) {
 				indice++;
 			}
 		}
-		
+		//Se crea el arreglo de comics activos
 		ComicDTO[] comicsActivos = new ComicDTO[indice];
 		
+		//Se busca y compara entre los comics cual está activo y cual no.
 		for (int i = 0; i < comics.length; i++) {
 			if(comics[i].getEstadoEnum() == EstadoEnum.DISPONIBLE) {
 				for (int j = 0; j < comicsActivos.length; j++) {
 					comicsActivos[j] = comics[i];
+					Assert.assertEquals(comicsActivos[j].getEstadoEnum(),EstadoEnum.NODISPONIBLE);
+					
 				}
 			}
 		}
-		
+		log.info("fin TEST verificarComicsActivos()");
 		return comicsActivos;
 	}
 	
-	@Test
-	private ComicDTO[] verificarComicsActivosTEST() {
+	/**
+	 * Metodo encargado de verificar si los comics están inactivos con un test unitario.
+	 * <b>Caso de Uso</b> CU-2021
+	 * @author David Navia
+	 * @return Array de Comics inactivos
+	 * @throws Exception excepcion lanzada cuando los comics que deberian ser inactivos no lo son
+	 */
+	private ComicDTO[] verificarComicsInactivos() throws Exception{
 		
-		log.info("Inicia ejecución del método verificarComicsActivosTEST()");
-		int indice = 0;
+		int indice = 0; //Variable que se encarga de asignar un indice al array que contendrá los comics inactivos.
 		
-		ComicDTO[] comics = crearComics();
+		ComicDTO[] comics = crearComics(); //llamado a todos los comics
 		
+		int totalComics = comics.length; //variable que entrega cuantos comics hay en total
 		
-		for (int i = 0; i < comics.length; i++) {
-			Assert.assertEquals(EstadoEnum.DISPONIBLE, comics[i].getEstadoEnum());
-		}
-		
-		log.info("termina ejecución del método verificarComicsActivosTEST()");
-		
-		//For donde busco cuantos comics están disponibles
-		for (int i = 0; i < comics.length; i++) {
-			if(comics[i].getEstadoEnum() == EstadoEnum.DISPONIBLE) {
-				indice++;
-			}
-		}
-		
-		ComicDTO[] comicsActivos = new ComicDTO[indice];
-		
-		for (int i = 0; i < comics.length; i++) {
-			if(comics[i].getEstadoEnum() == EstadoEnum.DISPONIBLE) {
-				for (int j = 0; j < comicsActivos.length; j++) {
-					comicsActivos[j] = comics[i];
-				}
-			}
-		}
+		String nombresComicsInactivos = ""; //variable que define los nombres de los comics inactivos para luego ser llamados en la excepcion
 		
 		
-		
-		
-		return comicsActivos;
-		
-		
-	}
-	
-	private ComicDTO[] verificarComicsInactivos() {
-		int indice = 0;
-		
-		ComicDTO[] comics = crearComics();
 		
 		//For donde busco cuantos comics están disponibles
 		for (int i = 0; i < comics.length; i++) {
@@ -142,70 +131,32 @@ public class CreacionComicTest {
 			}
 		}
 		
-		ComicDTO[] comicsInactivos = new ComicDTO[indice];
+		int totalInactivos = indice; //variable que indica el total de inactivos que hay
 		
-		for (int i = 0; i < comics.length; i++) {
-			if(comics[i].getEstadoEnum() == EstadoEnum.NODISPONIBLE) {
-				for (int j = 0; j < comicsInactivos.length; j++) {
-					comics[j] = comics[i];
+		int totalActivos = totalComics - totalInactivos; //variable que indica el total de comics activos que hay
+		
+		ComicDTO[] comicsInactivos = new ComicDTO[indice]; //creacion del arreglo a retornar con los comics activos
+		
+		//for donde se busca y compara entre los comics inactivos para poder mandar una excepcion en caso de que aparezca uno activo.
+			for (int i = 0; i < comics.length; i++) {
+				if(comics[i].getEstadoEnum() == EstadoEnum.NODISPONIBLE) {
+					for (int j = 0; j < comicsInactivos.length; j++) {
+						comicsInactivos[j] = comics[i];
+						nombresComicsInactivos = nombresComicsInactivos + comicsInactivos[j].getNombre(); //se llena la variable de nombres
+					}
+				}  else {
+					//se detecta un error y se manda una excepcion.
+					throw new Exception("Se ha detectado que de " + totalComics + " comics se encontraron que" + totalActivos + " se encuentran activos y" + totalInactivos + "inactivos. Los comics inactivos son: " + nombresComicsInactivos );
 				}
 			}
-		}
-		
+		//retorno del arreglo de inactivos.	
 		return comicsInactivos;
 	}
 	
-	@Test
-	private ComicDTO[] verificarComicsInactivosTEST() {
-		int indice = 0;
-		
-		ComicDTO[] comics = crearComics();
-		int comicsEnTotal = comics.length-1;
-		
-		
-		//For donde busco cuantos comics están disponibles
-		for (int i = 0; i < comics.length; i++) {
-			if(comics[i].getEstadoEnum() == EstadoEnum.NODISPONIBLE) {
-				indice++;
-			}
-		}
-		int comicsActivos = comicsEnTotal - indice;
-		int comicsInactivosIndice = indice;
-		
-		try {
-			
-				if(true) {
-					throw new Exception("Se ha detectado que de:" + comics.length + "Comics se encontraron que" + comicsActivos + "se encuentran activos y " + comicsInactivosIndice + "inactivos" + "los comics inactivos son:");
-				}
-			
-		} catch (Exception e) {
-			Assert.assertEquals(e.getMessage(),"Detectando comics inactivos");
-		}
-		
-		ComicDTO[] comicsInactivos = new ComicDTO[indice];
-		
-		for (int i = 0; i < comics.length; i++) {
-			if(comics[i].getEstadoEnum() == EstadoEnum.NODISPONIBLE) {
-				for (int j = 0; j < comicsInactivos.length; j++) {
-					comics[j] = comics[i];
-				}
-			}
-		}
-		
-		return comicsInactivos;
-	}
-	
-	private void leerComicsActivos() {
-		ComicDTO[] comics = verificarComicsActivos();
-		for (int i = 0; i < comics.length; i++) {
-			System.out.println(comics[i]);
-		}
-	}
-	
+	//fin de la prueba unitaria.
 	@AfterTest
 	public void finalizarPruebasUnitarias() {
 		log.info(":::::::::::::::::::::::: finalizan LAS PRUEBAS UNITARIAS ::::::::::::::::::::::::::::::::");
 	}
-	
-	
+
 }
