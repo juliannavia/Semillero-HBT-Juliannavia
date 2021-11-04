@@ -37,6 +37,7 @@ public class Comic implements Serializable {
 	 * serializamos. ;ediante este id podemos identificar el objeto convertido en un
 	 * array de bytes.
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String nombre;
