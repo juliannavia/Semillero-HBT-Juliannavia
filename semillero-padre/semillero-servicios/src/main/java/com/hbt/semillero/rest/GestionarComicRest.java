@@ -1,5 +1,7 @@
 package com.hbt.semillero.rest;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -10,6 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.hbt.semillero.dto.ComicDTO;
+import com.hbt.semillero.dto.ConsultaComicsDTO;
 import com.hbt.semillero.dto.ConsultaNombrePrecioComicDTO;
 import com.hbt.semillero.ejb.IGestionarComicLocal;
 import com.hbt.semillero.dto.ConsultaTamanioNombreDTO;
@@ -26,6 +29,15 @@ public class GestionarComicRest {
 	public ConsultaNombrePrecioComicDTO consultarNombrePrecioComic(@QueryParam("idComic") Long idComic) {
 		return this.gestionarComicLocal.consultarNombrePrecioComic(idComic);
 	}
+	
+	@GET
+	@Path("/consultarComic")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ComicDTO> consultarComics() {
+		return this.gestionarComicLocal.consultarComics();
+	}
+	
+	
 	
 	@POST
 	@Path("/crearComic")
@@ -52,4 +64,6 @@ public class GestionarComicRest {
 	public ConsultaTamanioNombreDTO consultarComicTamanioNombre(@QueryParam("lengthComic") Short lengthComic) {
 		return this.gestionarComicLocal.consultarNombreTamanioComic(lengthComic);
 	}
+	
+	
 }

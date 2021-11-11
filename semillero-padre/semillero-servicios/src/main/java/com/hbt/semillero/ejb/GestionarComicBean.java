@@ -1,5 +1,6 @@
 package com.hbt.semillero.ejb;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -72,20 +73,70 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	@Override
 	public List<ComicDTO> consultarComics() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ComicDTO> comicsDTO = new ArrayList<ComicDTO>();
+		ComicDTO comicDTO = new ComicDTO();
+		try {
+			String findAllComic = " SELECT c FROM Comic c ";
+			Query queryFindAllComic = em.createQuery(findAllComic);
+			List<Comic> listaComics = queryFindAllComic.getResultList();
+			for (int i = 0; i < listaComics.size(); i++) {
+				comicDTO = this.convertirComicToComicDTO(listaComics.get(i));
+				comicDTO.setExitoso(true);
+				comicDTO.setMensajeEjecucion("Se ejecutó perfectamente la consulta con este comic");
+				comicsDTO.add(comicDTO);
+			}
+			
+		} catch (Exception e) {
+			comicDTO.setExitoso(false);
+			comicDTO.setMensajeEjecucion("Existe un error en la conuslta de comics" + e);
+		}
+		return comicsDTO;
 	}
 
+	
+
 	/**
-	 * 
-	 * Metodo encargado de transformar un comic a un comicDTO
-	 * 
-	 * @param comic
-	 * @return
+	 * Metodo encargado de generar una consulta nativa que retorna dos listas, una con los comics por arriba de la longitud
+	 * y otra con los comics por debajo de la longitud.
+	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#consultarNombreTamanioComic(java.lang.Short)
 	 */
+	
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
+	@Override
+	public ConsultaTamanioNombreDTO consultarNombreTamanioComic(Short lengthComic) {
+		String consulta = "SELECT c.nombre " + "FROM Comic c";
+		ConsultaTamanioNombreDTO consultaTamanioNombreDTO = new ConsultaTamanioNombreDTO();
+		try {
+			if(lengthComic > 200) {
+				throw new Exception("La longitud  máxima permitida es de 200 caracteres");
+			}
+			Query consultaQuery = em.createQuery(consulta);
+			List<String> nombresComics = consultaQuery.getResultList();
+			for(String nombre : nombresComics) {
+				if(nombre.length() >= lengthComic) {
+					consultaTamanioNombreDTO.getComicsArribaDelTamanio().add(nombre);
+				} else {
+					consultaTamanioNombreDTO.getComicsAbajoDelTamanio().add(nombre);
+				}
+				
+				consultaTamanioNombreDTO.setExitoso(true);
+				consultaTamanioNombreDTO.setMensajeEjecucion("Comics procesados exitosamente.");
+			}
+		} catch (Exception e) {
+			consultaTamanioNombreDTO.setExitoso(false);
+			consultaTamanioNombreDTO.setMensajeEjecucion("Se ha presentado un error tecnico al consultar los comics."); 
+		}
+
+		return consultaTamanioNombreDTO;
+	}
+	
 	private ComicDTO convertirComicToComicDTO(Comic comic) {
 		ComicDTO comicDTO = new ComicDTO();
 		comicDTO.setId(comic.getId());
@@ -126,32 +177,9 @@ public class GestionarComicBean implements IGestionarComicLocal {
 		comic.setCantidad(comicDTO.getCantidad());
 		return comic;
 	}
+	
 
-	/**
-	 * Metodo encargado de generar una consulta nativa que retorna dos listas, una con los comics por arriba de la longitud
-	 * y otra con los comics por debajo de la longitud.
-	 * @see com.hbt.semillero.ejb.IGestionarComicLocal#consultarNombreTamanioComic(java.lang.Short)
-	 */
-	@PersistenceContext
-
-	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-
-	@Override
-	public ConsultaTamanioNombreDTO consultarNombreTamanioComic(Short lengthComic) {
-		String consulta = "SELECT new com.hbt.semillero.dto.ConsultaTamanioNombreDTO()  "
-				+ " FROM Comic c WHERE c.lengthComic < :lengthComic";
-		ConsultaTamanioNombreDTO consultaTamanioNombreDTO = new ConsultaTamanioNombreDTO();
-		try {
-			Query consultaNativa = em.createQuery(consulta);
-			consultaNativa.setParameter("lengthComic", lengthComic);
-			consultaTamanioNombreDTO = (ConsultaTamanioNombreDTO) consultaNativa.getSingleResult();
-			consultaTamanioNombreDTO.setExitoso(true);
-			consultaTamanioNombreDTO.setMensajeEjecucion("Se ejecuto exitosamente la consulta");
-		} catch (Exception e) {
-			consultaTamanioNombreDTO.setExitoso(false);
-			consultaTamanioNombreDTO.setMensajeEjecucion("Se ha presentado un error tecnico al consultar el comic");
-		}
-
-		return consultaTamanioNombreDTO;
-	}
+	
+	
+	
 }

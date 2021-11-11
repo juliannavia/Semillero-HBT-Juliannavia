@@ -13,22 +13,16 @@ public class ConsultaTamanioNombreDTO extends ResultadoDTO {
 	private ArrayList<String> comicsArribaDelTamanio;
 	private ArrayList<String> comicsAbajoDelTamanio;
 	
-	/**
-	 * Constructor de la clase (VACIO).
-	 */
-	public ConsultaTamanioNombreDTO() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	/**
 	 * Constructor de la clase DTO inicializando arreglos.
 	 * @param comicsArribaDelTamanio Aqui se guardan los comics por arriba de la longitud.
 	 * @param comicsAbajoDelTamanio Aqui se guardan los comics por abajo de la longitud.
 	 */
-	public ConsultaTamanioNombreDTO(ArrayList<String> comicsArribaDelTamanio, ArrayList<String> comicsAbajoDelTamanio) {
+	public ConsultaTamanioNombreDTO() {
 		super();
-		this.comicsArribaDelTamanio = comicsArribaDelTamanio;
-		this.comicsAbajoDelTamanio = comicsAbajoDelTamanio;
+		this.comicsArribaDelTamanio = new ArrayList<String>();
+		this.comicsAbajoDelTamanio = new ArrayList<String>();
 	}
 	
 	// Getters and Setters //
