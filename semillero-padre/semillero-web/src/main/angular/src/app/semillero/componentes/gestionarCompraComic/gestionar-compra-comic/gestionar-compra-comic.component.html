@@ -1,0 +1,22 @@
+<div class="container">
+  <p>¡Bienvenido a tu ventana de compra!</p>
+  <form [formGroup]="gestionarComicForm">
+    <h1>Comprar Comics</h1>
+    <hr>
+
+    <div class="row">
+      <div class="col-6">
+        <label for="nombreComic">Nombre comic: </label>
+        <input type="text" class="form-control" name="" id="nombreComic" formControlName="nombre">
+      </div>
+      <div class="col-6">
+        <label for="cantidadComic">Cantidad: </label>
+        <input type="text" class="form-control" name="" id="cantidadComic" formControlName="cantidad"
+          [ngClass]="{ 'is-invalid' : submitted && f.cantidad.errors }">
+        <div *ngIf="submitted && f.cantidad.errors">
+          <span class="text-danger" *ngIf="f.cantidad.errors.required">Campo requerido.</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

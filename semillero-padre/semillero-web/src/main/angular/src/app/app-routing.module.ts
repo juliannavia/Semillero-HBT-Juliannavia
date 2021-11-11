@@ -1,3 +1,4 @@
+import { GestionarCompraComicComponent } from './semillero/componentes/gestionarCompraComic/gestionar-compra-comic/gestionar-compra-comic.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GestionarComicComponent } from './semillero/componentes/gestionarComic/gestionar-comic/gestionar-comic.component';
@@ -5,7 +6,8 @@ import { BienvenidaComponent } from './semillero/componentes/home/bienvenida-com
 
 const routes: Routes = [
   { path: 'bienvenida', component: BienvenidaComponent, data : null },
-  { path: 'gestionar-comic', component: GestionarComicComponent }
+  { path: 'gestionar-comic', component: GestionarComicComponent },
+  { path: 'gestionar-compra-comic', component: GestionarCompraComicComponent }
   
 ];
 

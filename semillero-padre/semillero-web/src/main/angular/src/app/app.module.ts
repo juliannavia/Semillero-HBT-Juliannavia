@@ -11,6 +11,7 @@ import { GestionarComicComponent } from './semillero/componentes/gestionarComic/
 import { AppComponent } from './app.component';
 import { MenuComponent } from './semillero/componentes/menu/menu-component';
 import { CrearPersonaComponent } from './semillero/componentes/crearPersona/crear-persona.component';
+import { GestionarCompraComicComponent } from './semillero/componentes/gestionarCompraComic/gestionar-compra-comic/gestionar-compra-comic.component';
 
 // DTOs
 
@@ -20,7 +21,8 @@ import { CrearPersonaComponent } from './semillero/componentes/crearPersona/crea
     MenuComponent,
     BienvenidaComponent,
     GestionarComicComponent,
-    CrearPersonaComponent
+    CrearPersonaComponent,
+    GestionarCompraComicComponent
   ],
   imports: [
     BrowserModule,

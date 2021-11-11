@@ -157,6 +157,11 @@ export class GestionarComicComponent implements OnInit {
     this.router.navigate(['bienvenida', comic]);
   }
 
+  public irAComponenteComprar(comic : ComicDTO) : void {
+    this.cerrar();
+    this.router.navigate(['gestionar-compra-comic', comic]);
+  }
+
   get f() {
     return this.gestionarComicForm.controls;
   }
